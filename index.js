@@ -46,9 +46,15 @@ function tileExtentFromCoords(zoom, minX, maxX, minY, maxY) {
 // X range: 9241-9246, Y range: 4881-4885
 const hist1799 = tiledOverlay(
   './tiles-1799/{z}/{x}/{y}.png',
-  0.7,
+  1,
   tileExtentFromCoords(14, 9241, 9246, 4881, 4885),
   '1799 kaart: <a href="https://www.ra.ee/kaardid/index.php/et/map/view?id=24511&page=4">EAA.2072.3.359</a>/<a href="https://www.ra.ee/kaardid/index.php/et/map/view?id=24078">EAA.2072.3.366</a>'
+);
+const hist1866 = tiledOverlay(
+  './tiles-1866/{z}/{x}/{y}.png',
+  1,
+  tileExtentFromCoords(14, 9242, 9245, 4881, 4883),
+  '1866 kaart: <a href="https://www.ra.ee/kaardid/index.php/en/map/view?id=6516">EAA.3724.5.2294</a>'
 );
 
 // 3) Points (GeoJSON)
@@ -86,13 +92,14 @@ const pts1799 = pointLayer('./points-1799.geojson', 'name', '1799 talunimed: <a 
 
 // 4) Group each period: raster + points together, and keep groups exclusive
 const overlay1799 = new ol.layer.Group({ layers: [hist1799, pts1799], visible: false });
+const overlay1866 = new ol.layer.Group({ layers: [hist1866], visible: false });
 
 // Define the bounding box for the restricted area
 const boundingBox = ol.proj.transformExtent([23.0, 58.5, 23.5, 58.7], 'EPSG:4326', 'EPSG:3857');
 
 const map = new ol.Map({
   target: 'map',
-  layers: [baseFoto, baseHybrid, overlay1799],
+  layers: [baseFoto, baseHybrid, overlay1799, overlay1866],
   view: new ol.View({
     center: ol.proj.fromLonLat([23.116, 58.602]),
     minZoom: 12,
@@ -104,6 +111,7 @@ const map = new ol.Map({
 
 function setOverlay(which) {
   overlay1799.setVisible(which === '1799');
+  overlay1866.setVisible(which === '1866');
   baseHybrid.setVisible(which === 'none');
 
   // Show/hide opacity control based on selection
@@ -118,6 +126,7 @@ document.querySelectorAll('input[name="overlay"]').forEach(r => {
 const opacityInput = document.getElementById('opacity');
 function setOpacity(o) {
   hist1799.setOpacity(o);
+  hist1866.setOpacity(o);
 }
 
 opacityInput.addEventListener('input', e => setOpacity(parseFloat(e.target.value)));
