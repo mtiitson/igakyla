@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Igaküla</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v9.2.4/ol.css">
+    <style>
+        html, body { height: 100%; margin: 0; }
+        #map { position: absolute; inset: 0; }
+        #ui {
+          position: absolute; top: 10px; right: 10px;
+          background: rgba(255,255,255,0.95); padding: 12px 15px; border-radius: 8px;
+          font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+          backdrop-filter: blur(5px);
+          min-width: 200px;
+        }
+        fieldset { border: 0; margin: 0 0 12px 0; padding: 0; }
+        fieldset legend { font-weight: 600; margin-bottom: 6px; color: #333; }
+        label {
+          display: inline-block;
+          margin-right: 15px;
+          margin-bottom: 6px;
+          cursor: pointer;
+        }
+        label:last-child { margin-right: 0; }
+        input[type="range"] {
+          width: 180px;
+          vertical-align: middle;
+          margin-top: 6px;
+        }
+        .control-label {
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 6px;
+          display: block;
+        }
+
+        /* Style the OpenLayers attribution control */
+        .ol-attribution {
+          max-width: calc(100% - 3em);
+        }
+
+        .ol-attribution ul {
+          line-height: 1.4;
+          text-align: left;
+        }
+
+        .ol-attribution li {
+          display: block !important;
+          margin-bottom: 2px;
+        }
+
+        .ol-attribution li:last-child {
+          margin-bottom: 0;
+        }
+
+        /* Footer styling */
+        .footer {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          color: #ccc;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer a {
+          color: #ccc;
+          text-decoration: none;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer a:hover {
+          color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<div id="ui">
+    <div class="control-group">
+        <label><input type="radio" name="overlay" value="1799" checked> 1799</label>
+        <label><input type="radio" name="overlay" value="none"> Tänapäev</label>
+    </div>
+    <div class="control-group" id="opacity-group">
+        <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
+    </div>
+</div>
+
+<div class="footer">
+    Igaküla 2025 • <a href="#" id="contact-link">Kontakt</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/ol@v9.2.4/dist/ol.js"></script>
+<script>
+    document.getElementById('contact-link').addEventListener('click', function(e) {
+        e.preventDefault();
+        const user = 'mattias';
+        const domain = 'igaküla.ee';
+        const email = user + '@' + domain;
+        window.location.href = 'mailto:' + email + '?subject=Igaküla ajalookaart';
+    });
+</script>
+<script src="index.js"></script>
+</body>
+</html>

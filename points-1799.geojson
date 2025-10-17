@@ -1,0 +1,33 @@
+{
+"type": "FeatureCollection",
+"name": "punktid-1799",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3857" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "name": "IGANE (Igaküla)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 2573299.860404750332236, 8094787.430622379295528 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "name": "KOGGOVA (Koguva)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 2569846.695953335613012, 8093827.703351009637117 ] } },
+{ "type": "Feature", "properties": { "fid": 3, "name": "ROTSIFIER (Rootsivere)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 2573978.314500433858484, 8091482.540349180810153 ] } },
+{ "type": "Feature", "properties": { "fid": 4, "name": "NAUTZE (Nautse)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 2577530.601044069509953, 8092258.069855605252087 ] } },
+{ "type": "Feature", "properties": { "fid": 1, "name": "Lauri Tõnis", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573126.070295158773661, 8094880.688061960041523 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "name": "Oeldu Andrus", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573034.727368349209428, 8094847.712568826973438 ] } },
+{ "type": "Feature", "properties": { "fid": 3, "name": "Ranna Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573153.812751061283052, 8095008.578896584920585 ] } },
+{ "type": "Feature", "properties": { "fid": 4, "name": "Terala Tõnis", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573097.70764345722273, 8095112.29222000297159 ] } },
+{ "type": "Feature", "properties": { "fid": 5, "name": "Ranna Nigu", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573029.079621696844697, 8094979.509880278259516 ] } },
+{ "type": "Feature", "properties": { "fid": 6, "name": "Ansu Mart", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573255.523107257671654, 8094905.468937408179045 ] } },
+{ "type": "Feature", "properties": { "fid": 7, "name": "Pärdi Mihkel", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573348.79377201013267, 8094948.481244863010943 ] } },
+{ "type": "Feature", "properties": { "fid": 8, "name": "Pärdi Toomas", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573365.528443982824683, 8094865.139621787704527 ] } },
+{ "type": "Feature", "properties": { "fid": 9, "name": "Sea Kerstik", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573444.6479446971789, 8094837.011694350279868 ] } },
+{ "type": "Feature", "properties": { "fid": 10, "name": "Ivardi Annus", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573428.496979653835297, 8094753.882839088328183 ] } },
+{ "type": "Feature", "properties": { "fid": 11, "name": "Lepiku-Mihkli Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573312.448998695239425, 8094662.527660772204399 ] } },
+{ "type": "Feature", "properties": { "fid": 12, "name": "Runni Mart", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573211.869879611302167, 8094706.11182760540396 ] } },
+{ "type": "Feature", "properties": { "fid": 13, "name": "Runni Andrus", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573108.205785755999386, 8094722.015652413479984 ] } },
+{ "type": "Feature", "properties": { "fid": 14, "name": "Runni Mardi Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573018.445177969988436, 8094690.326960070058703 ] } },
+{ "type": "Feature", "properties": { "fid": 15, "name": "Neo Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2572898.284305047709495, 8094917.041367696598172 ] } },
+{ "type": "Feature", "properties": { "fid": 16, "name": "Terala Jaak", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2572889.827711482997984, 8094832.87159375846386 ] } },
+{ "type": "Feature", "properties": { "fid": 17, "name": "Peetri Laur", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573383.146415438968688, 8095370.276497845537961 ] } },
+{ "type": "Feature", "properties": { "fid": 18, "name": "Ennu Juri", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573251.243142500985414, 8095182.897099583409727 ] } },
+{ "type": "Feature", "properties": { "fid": 19, "name": "Mihkli Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573364.732976326718926, 8095201.202644512988627 ] } },
+{ "type": "Feature", "properties": { "fid": 20, "name": "Ennu Andrus", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573286.780454239342362, 8095247.156091525219381 ] } },
+{ "type": "Feature", "properties": { "fid": 21, "name": "Lauri Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573147.871703943703324, 8095256.00109635759145 ] } },
+{ "type": "Feature", "properties": { "fid": 22, "name": "Ansu-Matsi Jaan", "type": "talu" }, "geometry": { "type": "Point", "coordinates": [ 2573458.782544536981732, 8094964.620071151293814 ] } }
+]
+}
