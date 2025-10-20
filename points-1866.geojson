@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"name": "points-1866",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::3301" } },
+"features": [
+{ "type": "Feature", "properties": { "fid": 1, "name": "IGGONA (Igaküla)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 448635.711624523624778, 6496096.58004848100245 ] } },
+{ "type": "Feature", "properties": { "fid": 2, "name": "KOGGOVA (Koguva)", "type": "küla" }, "geometry": { "type": "Point", "coordinates": [ 446751.13826301402878, 6495610.61895243730396 ] } }
+]
+}

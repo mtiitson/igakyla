@@ -24,7 +24,7 @@
     <meta property="twitter:description" content="Igaküla ajalookaart - vaata kuidas küla nägi välja 1799. ja 1866. aastal. Interaktiivne kaart ajalooliste kaartide ja talukohanimedega."/>
     <meta property="twitter:image" content="https://www.xn--igakla-6ya.ee/preview.png"/>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v9.2.4/ol.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@v10.6.1/ol.css">
     <style>
         html, body { height: 100%; margin: 0; }
         #map { position: absolute; inset: 0; }
@@ -46,9 +46,47 @@
         }
         label:last-child { margin-right: 0; }
         input[type="range"] {
-          width: 180px;
+          width: 100%;
           vertical-align: middle;
           margin-top: 6px;
+          -webkit-appearance: none;
+          appearance: none;
+          background: #ddd;
+          height: 2px;
+          border-radius: 1px;
+          cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-track {
+          background: #ddd;
+          height: 2px;
+          border-radius: 1px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          background: #333;
+          height: 16px;
+          width: 16px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-track {
+          background: #ddd;
+          height: 2px;
+          border-radius: 1px;
+          border: none;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+          background: #333;
+          height: 16px;
+          width: 16px;
+          border-radius: 50%;
+          cursor: pointer;
+          border: none;
         }
         .control-label {
           font-weight: 600;
@@ -97,19 +135,128 @@
         .footer a:hover {
           color: #aaa;
         }
+
+        /* Timeline styling */
+        .timeline-container {
+          position: relative;
+          padding: 20px 0;
+        }
+
+        .timeline-line {
+          position: absolute;
+          top: 26px; /* Position to go through center of dots */
+          left: 0px;
+          right: 15px;
+          height: 2px;
+          background: #ddd;
+          border-radius: 1px;
+        }
+
+        .timeline-markers {
+          display: flex;
+          justify-content: space-between;
+          position: relative;
+          z-index: 2;
+        }
+
+        .timeline-marker {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          cursor: pointer;
+          margin: 0;
+        }
+
+        .timeline-marker input[type="radio"] {
+          position: absolute;
+          opacity: 0;
+          pointer-events: none;
+        }
+
+        .marker-dot {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: #fff;
+          border: 2px solid #ddd;
+          transition: all 0.2s ease;
+          margin-bottom: 8px;
+        }
+
+        .timeline-marker:hover .marker-dot {
+          border-color: #666;
+          transform: scale(1.1);
+        }
+
+        .timeline-marker input[type="radio"]:checked + .marker-dot {
+          background: #333;
+          border-color: #333;
+        }
+
+        .marker-label {
+          font-size: 12px;
+          font-weight: 500;
+          color: #666;
+          transition: color 0.2s ease;
+          white-space: nowrap;
+        }
+
+        .timeline-marker input[type="radio"]:checked ~ .marker-label {
+          color: #333;
+          font-weight: 600;
+        }
+
+        .opacity-container {
+          width: 100%;
+        }
+
+        .opacity-labels {
+          display: flex;
+          justify-content: space-between;
+          font-size: 12px;
+          font-weight: 500;
+          color: #666;
+          margin-top: 4px;
+        }
     </style>
 </head>
 <body>
 <div id="map"></div>
 
 <div id="ui">
-    <div class="control-group">
-        <label><input type="radio" name="overlay" value="1799" checked> 1799</label>
-        <label><input type="radio" name="overlay" value="1866"> 1866</label>
-        <label><input type="radio" name="overlay" value="none"> Tänapäev</label>
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        <div class="timeline-markers">
+            <label class="timeline-marker" data-year="1799">
+                <input type="radio" name="overlay" value="1799" checked>
+                <span class="marker-dot"></span>
+                <span class="marker-label">1799</span>
+            </label>
+            <label class="timeline-marker" data-year="1866">
+                <input type="radio" name="overlay" value="1866">
+                <span class="marker-dot"></span>
+                <span class="marker-label">1866</span>
+            </label>
+            <label class="timeline-marker" data-year="1956">
+                <input type="radio" name="overlay" value="1956">
+                <span class="marker-dot"></span>
+                <span class="marker-label">1956</span>
+            </label>
+            <label class="timeline-marker" data-year="current">
+                <input type="radio" name="overlay" value="current">
+                <span class="marker-dot"></span>
+                <span class="marker-label" id="current-year">2025</span>
+            </label>
+        </div>
     </div>
     <div class="control-group" id="opacity-group">
-        <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
+        <div class="opacity-container">
+            <input id="opacity" type="range" min="0" max="1" step="0.05" value="1">
+            <div class="opacity-labels">
+                <span class="opacity-label">0%</span>
+                <span class="opacity-label">100%</span>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -117,16 +264,8 @@
     Igaküla 2025 • <a href="#" id="contact-link">Kontakt</a>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/ol@v9.2.4/dist/ol.js"></script>
-<script>
-    document.getElementById('contact-link').addEventListener('click', function(e) {
-        e.preventDefault();
-        const user = 'mattias';
-        const domain = 'igaküla.ee';
-        const email = user + '@' + domain;
-        window.location.href = 'mailto:' + email + '?subject=Igaküla ajalookaart';
-    });
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/10.6.1/dist/ol.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.19.10/proj4.min.js"></script>d
 <script src="index.js"></script>
 </body>
 </html>
