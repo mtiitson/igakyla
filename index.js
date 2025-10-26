@@ -107,7 +107,7 @@ const elevation = new ol.layer.Tile({
         tileGrid: createLESTTileGrid(),
         attributions: 'Aluskaart: <a href="https://www.maaruum.ee">Maa- ja Ruumiamet</a>'
     })
-})
+});
 
 const hybrid = new ol.layer.Tile({
     source: new ol.source.WMTS({
@@ -121,7 +121,7 @@ const hybrid = new ol.layer.Tile({
         tileGrid: createLESTTileGrid(),
         attributions: 'Aluskaart: <a href="https://www.maaruum.ee">Maa- ja Ruumiamet</a>'
     })
-})
+});
 
 const ortho = new ol.layer.Tile({
     source: new ol.source.WMTS({
@@ -151,6 +151,22 @@ const hist1956 = new ol.layer.Image({
     extent: [445400, 6494113, 452528, 6498500]
 });
 
+const heritageSites = new ol.layer.Image({
+    source: new ol.source.ImageWMS({
+        url: 'https://gsavalik.envir.ee/geoserver/maaamet/wms',
+        params: {
+            'LAYERS': 'eelis_pk_objekt_metsas',
+            'FORMAT': 'image/png',
+            'VERSION': '1.1.1'
+        },
+        crossOrigin: 'anonymous',
+        projection: 'EPSG:3301',
+        attributions: 'Pärandkultuuri objektid: <a href="https://www.maaruum.ee">Maa- ja Ruumiamet</a>'
+    }),
+    visible: false,
+    extent: [445400, 6494113, 452528, 6498500]
+});
+
 
 const hist1799 = tiledOverlay(
   './tiles-1799/{z}/{x}/{y}.png',
@@ -174,6 +190,25 @@ const overlay1956 = new ol.layer.Group({ layers: [hist1956, pts1956], visible: f
 const base = new ol.layer.Group({ layers: [elevation, hybrid] });
 const current = new ol.layer.Group({ layers: [ortho, pts2025] , visible: false });
 
+// Create popup overlay
+const popupContainer = document.getElementById('popup');
+const popupContent = document.getElementById('popup-content');
+const popupCloser = document.getElementById('popup-closer');
+
+const popupOverlay = new ol.Overlay({
+  element: popupContainer,
+  autoPan: true,
+  autoPanAnimation: {
+    duration: 250
+  }
+});
+
+popupCloser.onclick = function() {
+  popupOverlay.setPosition(undefined);
+  popupCloser.blur();
+  return false;
+};
+
 const map = new ol.Map({
   target: 'map',
   layers: [
@@ -182,7 +217,9 @@ const map = new ol.Map({
     overlay1799,
     overlay1866,
     overlay1956,
+    heritageSites
   ],
+  overlays: [popupOverlay],
   view: new ol.View({
     extent: [432955, 6487056, 481532, 6506172],
     center: [448583, 6496283],
@@ -195,6 +232,9 @@ document.getElementById('opacity').addEventListener('input', e => setOpacity(par
 document.querySelectorAll('input[name="overlay"]').forEach(r => {
   r.addEventListener('change', e => setOverlay(e.target.value));
 });
+document.getElementById('heritage-sites').addEventListener('change', e => {
+  heritageSites.setVisible(e.target.checked);
+});
 document.getElementById('contact-link').addEventListener('click', function(e) {
     e.preventDefault();
     const user = 'mattias';
@@ -202,6 +242,57 @@ document.getElementById('contact-link').addEventListener('click', function(e) {
     const email = user + '@' + domain;
     window.location.href = 'mailto:' + email + '?subject=Igaküla ajalookaart';
 });
+
+// Click handler for heritage sites
+map.on('singleclick', function(evt) {
+  if (!heritageSites.getVisible()) return;
+
+  const viewResolution = map.getView().getResolution();
+  const url = heritageSites.getSource().getFeatureInfoUrl(
+    evt.coordinate,
+    viewResolution,
+    'EPSG:3301',
+    {'INFO_FORMAT': 'application/json'}
+  );
+
+  if (url) {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.features && data.features.length > 0) {
+          const feature = data.features[0];
+          const props = feature.properties;
+
+          let html = `<h3>${props.nimi || 'Pärandkultuuri objekt'}</h3>`;
+
+          if (props.tyyp) {
+            html += `<p><strong>Tüüp:</strong> ${props.tyyp}</p>`;
+          }
+          if (props.seisund) {
+            html += `<p><strong>Seisund:</strong> ${props.seisund}</p>`;
+          }
+          if (props.parimused) {
+            html += `<p><strong>Pärimused:</strong> ${props.parimused}</p>`;
+          }
+          if (props.markused) {
+            html += `<p><strong>Märkused:</strong> ${props.markused}</p>`;
+          }
+          if (props.foto) {
+            html += `<img src="${props.foto}" alt="${props.nimi}" onerror="this.style.display='none'">`;
+          }
+
+          popupContent.innerHTML = html;
+          popupOverlay.setPosition(evt.coordinate);
+        } else {
+          popupOverlay.setPosition(undefined);
+        }
+      })
+      .catch(err => {
+        console.error('Error fetching heritage site info:', err);
+      });
+  }
+});
+
 document.getElementById('current-year').textContent = new Date().getFullYear();
 setOverlay('1799');
 setOpacity(1);

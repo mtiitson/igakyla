@@ -2,14 +2,14 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Igaküla Ajalookaart</title>
+    <title>Igaküla ajalookaart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="description" content="Igaküla ajalookaart - vaata kuidas küla nägi välja 1799. ja 1866. aastal. Interaktiivne kaart ajalooliste kaartide ja talukohanimedega."/>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://www.xn--igakla-6ya.ee/"/>
-    <meta property="og:title" content="Igaküla Ajalookaart"/>
+    <meta property="og:title" content="Igaküla ajalookaart"/>
     <meta property="og:description" content="Igaküla ajalookaart - vaata kuidas küla nägi välja 1799. ja 1866. aastal. Interaktiivne kaart ajalooliste kaartide ja talukohanimedega."/>
     <meta property="og:image" content="https://www.xn--igakla-6ya.ee/preview.png"/>
     <meta property="og:image:width" content="1200"/>
@@ -20,7 +20,7 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image"/>
     <meta property="twitter:url" content="https://www.xn--igakla-6ya.ee/"/>
-    <meta property="twitter:title" content="Igaküla Ajalookaart"/>
+    <meta property="twitter:title" content="Igaküla ajalookaart"/>
     <meta property="twitter:description" content="Igaküla ajalookaart - vaata kuidas küla nägi välja 1799. ja 1866. aastal. Interaktiivne kaart ajalooliste kaartide ja talukohanimedega."/>
     <meta property="twitter:image" content="https://www.xn--igakla-6ya.ee/preview.png"/>
 
@@ -45,6 +45,17 @@
           cursor: pointer;
         }
         label:last-child { margin-right: 0; }
+        .control-group {
+          margin-top: 16px;
+        }
+        .control-group:first-child {
+          margin-top: 0;
+        }
+        .control-group label span {
+          font-size: 12px;
+          font-weight: 500;
+          color: #666;
+        }
         input[type="range"] {
           width: 100%;
           vertical-align: middle;
@@ -88,18 +99,8 @@
           cursor: pointer;
           border: none;
         }
-        .control-label {
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 6px;
-          display: block;
-        }
 
         /* Style the OpenLayers attribution control */
-        .ol-attribution {
-          max-width: calc(100% - 3em);
-        }
-
         .ol-attribution ul {
           line-height: 1.4;
           text-align: left;
@@ -139,13 +140,13 @@
         /* Timeline styling */
         .timeline-container {
           position: relative;
-          padding: 20px 0;
+          padding: 20px 0 10px 0;
         }
 
         .timeline-line {
           position: absolute;
           top: 26px; /* Position to go through center of dots */
-          left: 0px;
+          left: 0;
           right: 15px;
           height: 2px;
           background: #ddd;
@@ -218,6 +219,77 @@
           color: #666;
           margin-top: 4px;
         }
+        .extra-layers {
+            padding-top: 16px;
+        }
+
+        .extra-layers input {
+           margin-left: 0;
+        }
+
+        /* Popup styling */
+        .ol-popup {
+          position: absolute;
+          background-color: white;
+          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+          padding: 15px;
+          border-radius: 8px;
+          bottom: 12px;
+          left: -50px;
+          min-width: 280px;
+          max-width: 400px;
+          font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }
+        .ol-popup:after, .ol-popup:before {
+          top: 100%;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+        .ol-popup:after {
+          border-top-color: white;
+          border-width: 10px;
+          left: 48px;
+          margin-left: -10px;
+        }
+        .ol-popup:before {
+          border-top-color: rgba(0,0,0,0.1);
+          border-width: 11px;
+          left: 48px;
+          margin-left: -11px;
+        }
+        .ol-popup-closer {
+          text-decoration: none;
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 20px;
+          color: #999;
+          cursor: pointer;
+        }
+        .ol-popup-closer:hover {
+          color: #333;
+        }
+        .popup-content h3 {
+          margin: 0 0 10px 0;
+          color: #333;
+          font-size: 16px;
+        }
+        .popup-content p {
+          margin: 5px 0;
+          line-height: 1.5;
+        }
+        .popup-content strong {
+          color: #666;
+        }
+        .popup-content img {
+          width: 100%;
+          border-radius: 4px;
+          margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -258,10 +330,23 @@
             </div>
         </div>
     </div>
+    <div class="control-group">
+        <div class="extra-layers">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" id="heritage-sites" style="margin-right: 6px;">
+                <span>Pärandkultuuri objektid</span>
+            </label>
+        </div>
+    </div>
 </div>
 
 <div class="footer">
     Igaküla 2025 • <a href="#" id="contact-link">Kontakt</a>
+</div>
+
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer">&times;</a>
+    <div id="popup-content" class="popup-content"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/10.6.1/dist/ol.js"></script>
